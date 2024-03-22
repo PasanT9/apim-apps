@@ -181,6 +181,11 @@ const ApiChat = () => {
     const [finalOutcome, setFinalOutcome] = useState('');
     const [executionResults, setExecutionResults] = useState([]);
     const [isExecutionError, setIsExecutionError] = useState(false);
+    const [accessToken, setAccessToken] = useState(null);
+    const [securityScheme, setSecurityScheme] = useState(null);
+    const [username, setUsername] = useState(null);
+    const [password, setPassword] = useState(null);
+    const [selectedEnvironment, setSelectedEnvironment] = useState(null);
     // const [expandedPanel, setExpandedPanel] = useState(false);
     // const [request, setRequest] = useState({});
     // const [isAgentTerminating, setIsAgentTerminating] = useState(false);
@@ -216,7 +221,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.specEnrichmentError.invalidSpecificationError',
                         defaultMessage:
-                  'The OpenAPI specification could not be parsed. Ensure you are using a valid specification.',
+                            'The OpenAPI specification could not be parsed. Ensure you are using a valid specification.',
                     }),
                 );
                 break;
@@ -225,7 +230,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.specEnrichmentError.invalidResourcePathError',
                         defaultMessage:
-                  'The OpenAPI specification contain unsupported resource path definitions.',
+                            'The OpenAPI specification contain unsupported resource path definitions.',
                     }),
                 );
                 break;
@@ -234,7 +239,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.specEnrichmentError.unsupportedMediaTypeError',
                         defaultMessage:
-                  'The OpenAPI specification includes non-JSON input types which are not currently supported.',
+                            'The OpenAPI specification includes non-JSON input types which are not currently supported.',
                     }),
                 );
                 break;
@@ -243,7 +248,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.specEnrichmentError.unsupportedSpecificationError',
                         defaultMessage:
-                  'The OpenAPI specification includes components that are currently not supported.',
+                            'The OpenAPI specification includes components that are currently not supported.',
                     }),
                 );
                 break;
@@ -260,7 +265,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.specEnrichmentError.tokenLimitExceededError',
                         defaultMessage:
-                  'The OpenAPI specification exceeds the maximum limit.',
+                            'The OpenAPI specification exceeds the maximum limit.',
                     }),
                 );
                 break;
@@ -269,8 +274,8 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.specEnrichmentError.stackOverflowError',
                         defaultMessage:
-                  'The OpenAPI specification could not be parsed due to a cyclic reference or the excessive length of the'
-                  + ' specification.',
+                            'The OpenAPI specification could not be parsed due to a cyclic reference or the excessive length of the'
+                            + ' specification.',
                     }),
                 );
                 break;
@@ -279,7 +284,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.specEnrichmentError.contentViolationError',
                         defaultMessage:
-                  'The content in the OpenAPI specification violates the Azure OpenAI content policy.',
+                            'The content in the OpenAPI specification violates the Azure OpenAI content policy.',
                     }),
                 );
                 break;
@@ -310,7 +315,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.finalOutcome.llmError',
                         defaultMessage:
-                  'An error occurred during query execution. Try again.',
+                            'An error occurred during query execution. Try again.',
                     }),
                 );
                 break;
@@ -319,7 +324,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.finalOutcome.cachingError',
                         defaultMessage:
-                  'An error occurred during query execution. Try again later.',
+                            'An error occurred during query execution. Try again later.',
                     }),
                 );
                 break;
@@ -328,7 +333,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.finalOutcome.responseParsingError',
                         defaultMessage:
-                  'An error occurred while attempting to extract the API response.',
+                            'An error occurred while attempting to extract the API response.',
                     }),
                 );
                 break;
@@ -337,7 +342,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.finalOutcome.apiCommunicationError',
                         defaultMessage:
-                  'An error occurred while attempting to establish a connection with your API.',
+                            'An error occurred while attempting to establish a connection with your API.',
                     }),
                 );
                 break;
@@ -346,7 +351,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.finalOutcome.tokenLimitExceededError',
                         defaultMessage:
-                  'Execution has been terminated due to exceeding the token limit.',
+                            'Execution has been terminated due to exceeding the token limit.',
                     }),
                 );
                 break;
@@ -363,7 +368,7 @@ const ApiChat = () => {
                     intl.formatMessage({
                         id: 'modules.testComponent.TryWithAIViewer.finalOutcome.contentViolationError',
                         defaultMessage:
-                  'Your query seems to contain inappropriate content. Please try again with a different query.',
+                            'Your query seems to contain inappropriate content. Please try again with a different query.',
                     }),
                 );
                 break;
@@ -427,7 +432,7 @@ const ApiChat = () => {
         <FormattedMessage
             id='Apis.Details.ApiChat.warning.authTokenMissing'
             defaultMessage={'You must provide an auth token to start testing. To obtain one, '
-            + 'follow the steps provided under {apiChatDocLink} '}
+                + 'follow the steps provided under {apiChatDocLink} '}
             values={{
                 apiChatDocLink: (
                     <Link
@@ -475,27 +480,117 @@ const ApiChat = () => {
         setFinalOutcome('');
     };
 
-    const getDummyApiInvocationResult = (generatedRequest) => {
-        const responseCode = generatedRequest.method === 'POST' ? 201 : 200;
-        return {
-            code: responseCode,
-            path: generatedRequest.path,
-            headers: {},
-            body: {
-                description: 'API invocation successful',
-            },
+    const handleConfigChangeChange = ({
+        newAccessToken, newSecurityScheme, newUsername, newPassword, newSelectedEnvironment,
+    }) => {
+        if (newAccessToken !== undefined) setAccessToken(newAccessToken);
+        if (newSecurityScheme !== undefined) setSecurityScheme(newSecurityScheme);
+        if (newUsername !== undefined) setUsername(newUsername);
+        if (newPassword !== undefined) setPassword(newPassword);
+        if (newSelectedEnvironment !== undefined) setSelectedEnvironment(newSelectedEnvironment);
+        console.log(accessToken, securityScheme, selectedEnvironment);
+    };
+
+    const getEnvironmentURLs = (endpointURLs, environmentName) => {
+        const environment = endpointURLs.find((env) => env.environmentName === environmentName);
+        return environment ? environment.URLs : {};
+    };
+
+    const invokeAPI = async (generatedRequest) => {
+        const { method, path, inputs } = generatedRequest;
+        const { parameters, requestBody } = inputs || {};
+        let resolvedPath = path;
+        if (parameters && resolvedPath) {
+            Object.entries(parameters).forEach(([key, value]) => {
+                resolvedPath = resolvedPath.replace(`{${key}}`, value);
+            });
+        }
+        const environmentURLs = getEnvironmentURLs(api.endpointURLs, selectedEnvironment);
+        const url = `${environmentURLs.https}${resolvedPath}`;
+        console.log(accessToken, securityScheme, method, resolvedPath, environmentURLs.https);
+
+        const headers = {
+            'Content-Type': 'application/json',
         };
+
+        const fetchOptions = {
+            method,
+            headers,
+        };
+
+        if ((method === 'POST' || method === 'PUT' || method === 'PATCH') && requestBody !== null) {
+            fetchOptions.body = JSON.stringify(requestBody);
+        }
+
+        if (securityScheme === 'OAUTH') {
+            headers.Authorization = `Bearer ${accessToken}`;
+        } else if (securityScheme === 'BASIC') {
+            const base64Credentials = btoa(`${username}:${password}`);
+            headers.Authorization = `Basic ${base64Credentials}`;
+        } else if (securityScheme === 'API-KEY') {
+            headers.ApiKey = accessToken;
+        }
+        try {
+            const response = await fetch(url, fetchOptions);
+            let data = null;
+            try {
+                data = await response.json();
+            } catch (error) {
+                console.error('Failed to parse JSON:', error);
+                return {
+                    code: response.status,
+                    path: resolvedPath,
+                    headers: response.headers,
+                    body: {},
+                };
+            }
+            if (!response.ok) {
+                return {
+                    code: response.status,
+                    path: resolvedPath,
+                    headers: response.headers,
+                    body: data,
+                };
+            }
+
+            console.log(data);
+            if (data !== null) {
+                return {
+                    code: response.status,
+                    path: resolvedPath,
+                    headers: response.headers,
+                    body: data,
+                };
+            } else {
+                return {
+                    code: response.status,
+                    path: resolvedPath,
+                    headers: response.headers,
+                    body: {},
+                };
+            }
+        } catch (error) {
+            return {
+                code: 500,
+                path: resolvedPath,
+                headers: {},
+                body: {
+                    description: 'API invocation failed',
+                    error: error.message,
+                },
+            };
+        }
     };
 
     const sendSubsequentRequest = async (requestId, resource) => {
-        const dummyResponse = getDummyApiInvocationResult(resource);
+        const invokeResponse = await invokeAPI(resource);
         setExecutionResults([
             ...executionResults,
-            dummyResponse,
+            invokeResponse,
         ]);
         const executePromise = apiClient.runAiAgentSubsequentIterations(
             requestId,
-            dummyResponse,
+            invokeResponse,
         );
         executePromise.then((response) => {
             const { data } = response;
@@ -707,16 +802,17 @@ const ApiChat = () => {
                     <ConfigureKeyDrawer
                         isDrawerOpen={configureKeyDrawerOpen}
                         updateDrawerOpen={setConfigureKeyDrawerOpen}
+                        onConfigChange={handleConfigChangeChange}
                     />
                 )}
                 <ApiChatPoweredBy
                     openConfigureKey={handleOpenConfigureKey}
                     goBack={handleGoBack}
                     disableGoBack={isAgentRunning || lastQuery === ''}
-                    // openSampleQueries={handleOpenSampleQueries}
-                    // showSampleQueries={
-                    //     lastQuery !== '' || isAgentRunning || finalOutcome !== ''
-                    // }
+                // openSampleQueries={handleOpenSampleQueries}
+                // showSampleQueries={
+                //     lastQuery !== '' || isAgentRunning || finalOutcome !== ''
+                // }
                 />
                 {(isAgentRunning || lastQuery || finalOutcome) && (
                     <Box maxHeight='60%' overflow='auto'>
@@ -725,7 +821,7 @@ const ApiChat = () => {
                             disabled
                             defaultValue={lastQuery}
                             sx={{ marginBottom: 2 }}
-                            // endAdornment={<InputAdornment position="end">kg</InputAdornment>}
+                        // endAdornment={<InputAdornment position="end">kg</InputAdornment>}
                         />
                         {/* <Box className={classes.lastQueryWrap}>
                             <Typography variant='body1'>
@@ -820,25 +916,25 @@ const ApiChat = () => {
                         <Box display='flex' margin={5}>
                             <Grid container direction='row' spacing={3}>
                                 {sampleQueries
-                                && sampleQueries.map((queryData) => {
-                                    const gridVal = sampleQueries.length === 2 ? 6 : 4;
-                                    return (
-                                        <Grid
-                                            key={queryData.scenario}
-                                            item
-                                            xs={12}
-                                            md={gridVal}
-                                        >
-                                            <SampleQueryCard
-                                                onExecuteClick={handleExecuteSampleQuery}
-                                                // disabled={isAgentRunning}
-                                                queryData={queryData}
-                                                onCopyClick={handleCopyClick}
+                                    && sampleQueries.map((queryData) => {
+                                        const gridVal = sampleQueries.length === 2 ? 6 : 4;
+                                        return (
+                                            <Grid
+                                                key={queryData.scenario}
+                                                item
+                                                xs={12}
+                                                md={gridVal}
+                                            >
+                                                <SampleQueryCard
+                                                    onExecuteClick={handleExecuteSampleQuery}
+                                                    // disabled={isAgentRunning}
+                                                    queryData={queryData}
+                                                    onCopyClick={handleCopyClick}
                                                 // boxShadow='dark'
-                                            />
-                                        </Grid>
-                                    );
-                                })}
+                                                />
+                                            </Grid>
+                                        );
+                                    })}
                             </Grid>
                         </Box>
                     ) : (
@@ -888,15 +984,15 @@ const ApiChat = () => {
                     handleQueryChange={handleQueryChange}
                     isEnrichingSpec={isEnrichingSpec}
                     handleExecute={handleExecute}
-                    // isAgentRunning={isAgentRunning}
-                    // isAgentTerminating={isAgentTerminating}
-                    // lastQuery={lastQuery}
-                    // handleStopAndReExecute={handleStopAndReExecute}
-                    // enrichedSpec={enrichedSpec}
-                    // inputQuery={inputQuery}
-                    // handleQueryChange={handleQueryChange}
-                    // isEnrichingSpec={isEnrichingSpec}
-                    // handleExecute={handleExecute}
+                // isAgentRunning={isAgentRunning}
+                // isAgentTerminating={isAgentTerminating}
+                // lastQuery={lastQuery}
+                // handleStopAndReExecute={handleStopAndReExecute}
+                // enrichedSpec={enrichedSpec}
+                // inputQuery={inputQuery}
+                // handleQueryChange={handleQueryChange}
+                // isEnrichingSpec={isEnrichingSpec}
+                // handleExecute={handleExecute}
                 />
             </Box>
         </Root>
