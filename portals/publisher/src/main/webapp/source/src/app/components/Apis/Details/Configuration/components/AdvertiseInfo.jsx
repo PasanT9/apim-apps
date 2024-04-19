@@ -211,7 +211,7 @@ const AdvertiseInfo = (props) => {
                         >
                             <FormControlLabel
                                 disabled={isRestricted(['apim:api_create'], apiFromContext)
-                                    || type === 'ASYNC' || isDeployed}
+                                    || type === 'ASYNC' || (apiType !== API.CONSTS.APIProduct && isDeployed)}
                                 value
                                 control={<Radio color='primary' />}
                                 label={(
@@ -223,7 +223,7 @@ const AdvertiseInfo = (props) => {
                             />
                             <FormControlLabel
                                 disabled={isRestricted(['apim:api_create'], apiFromContext)
-                                    || type === 'ASYNC' || isDeployed}
+                                    || type === 'ASYNC' || (apiType !== API.CONSTS.APIProduct && isDeployed)}
                                 value={false}
                                 control={<Radio color='primary' />}
                                 label={(
@@ -273,7 +273,7 @@ const AdvertiseInfo = (props) => {
                         />
                     </MuiAlert>
                 )}
-                {isDeployed && (
+                {isDeployed && apiType !== API.CONSTS.APIProduct && (
                     <MuiAlert severity='info' className={classes.alert}>
                         <Typography gutterBottom component='div' className={classes.alertTitle}>
                             <FormattedMessage

@@ -159,7 +159,7 @@ const TryOutConsole = () => {
         }
     }, [publisherSettings]);
 
-    const isAdvertised = api.advertiseInfo && api.advertiseInfo.advertised;
+    const isAdvertised = api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== Api.CONSTS.APIProduct;
     const setServersSpec = (spec, serverUrl) => {
         let schemes;
         const [protocol, host] = serverUrl.split('://');
@@ -306,7 +306,7 @@ const TryOutConsole = () => {
                 <FormattedMessage id='Apis.Details.ApiConsole.ApiConsole.title' defaultMessage='Try Out' />
             </Typography>
             <Paper elevation={0} sx={{ mt: 1, p: 3 }}>
-                {(!api.advertiseInfo || !api.advertiseInfo.advertised) ? (
+                {((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === Api.CONSTS.APIProduct) ? (
                     <>
                         <Box display='flex' justifyContent='center' sx={{ mb: 3 }}>
                             <Grid container>

@@ -513,146 +513,149 @@ export default function RuntimeConfiguration() {
                 </Typography>
             </Box>
             <div className={classes.contentWrapper}>
-                {(apiConfig.advertiseInfo && apiConfig.advertiseInfo.advertised) ? (
-                    <Paper className={classes.paper} elevation={0}>
-                        <APISecurity api={apiConfig} configDispatcher={configDispatcher} />
-                    </Paper>
-                ) : (
-                    <Grid container direction='row' justifyContent='space-around' alignItems='stretch' 
-                        columnSpacing={8}>
-                        <Grid item xs={12} md={7}>
-                            <Typography className={classes.heading} variant='h6' component='h3'>
-                                { isAsyncAPI
-                                    ? (
-                                        <FormattedMessage
-                                            id='Apis.Details.Configuration.Configuration.section.initial.request'
-                                            defaultMessage='Initial Request'
-                                        />
-                                    ) : (
-                                        <FormattedMessage
-                                            id='Apis.Details.Configuration.Configuration.section.request'
-                                            defaultMessage='Request'
-                                        />
-                                    )}
-                            </Typography>
-                            <Grid direction='column' justifyContent='space-between' alignItems='stretch' spacing={6}>
-                                <Grid item xs={12} sx={{ mb: 3, position: 'relative' }}>
-                                    <Paper elevation={0} 
-                                        sx={{ p: 3, boxSizing: 'border-box' }}>
-                                        <APISecurity api={apiConfig} configDispatcher={configDispatcher} />
-                                        { api.type !== 'WS' && (
-                                            <CORSConfiguration api={apiConfig} 
-                                                configDispatcher={configDispatcher} />
+                {(apiConfig.advertiseInfo && apiConfig.advertiseInfo.advertised 
+                    && api.apiType !== Api.CONSTS.APIProduct) ? (
+                        <Paper className={classes.paper} elevation={0}>
+                            <APISecurity api={apiConfig} configDispatcher={configDispatcher} />
+                        </Paper>
+                    ) : (
+                        <Grid container direction='row' justifyContent='space-around' alignItems='stretch' 
+                            columnSpacing={8}>
+                            <Grid item xs={12} md={7}>
+                                <Typography className={classes.heading} variant='h6' component='h3'>
+                                    { isAsyncAPI
+                                        ? (
+                                            <FormattedMessage
+                                                id='Apis.Details.Configuration.Configuration.section.initial.request'
+                                                defaultMessage='Initial Request'
+                                            />
+                                        ) : (
+                                            <FormattedMessage
+                                                id='Apis.Details.Configuration.Configuration.section.request'
+                                                defaultMessage='Request'
+                                            />
                                         )}
-
-                                        {((api.type !== 'GRAPHQL' || !isAsyncAPI) && api.gatewayType !== 'wso2/apk')
-                                            && <SchemaValidation api={apiConfig} 
-                                                configDispatcher={configDispatcher} />}
-                                        {api.type === 'GRAPHQL' && api.gatewayType !== 'wso2/apk' && (
-                                            <Box mt={3}>
-                                                <QueryAnalysis
-                                                    api={apiConfig}
-                                                    setUpdateComplexityList={setUpdateComplexityList}
-                                                    isRestricted={isRestricted(['apim:api_create'], api)}
-                                                />
-                                            </Box>
-                                        )}
-                                    </Paper>
-                                    {!isWebSub && (
-                                        <ArrowForwardIcon className={classes.arrowForwardIcon} />
-                                    )}
-                                </Grid>
-                                { api.gatewayType !== 'wso2/apk' && !isNonWebSubAsyncAPI && (
-                                    <>
-                                        <Typography className={classes.heading} variant='h6' component='h3'>
-                                            {!isWebSub ? (
-                                                <FormattedMessage
-                                                    id='Apis.Details.Configuration.Configuration.section.response'
-                                                    defaultMessage='Response'
-                                                />
-                                            ) : (
-                                                <FormattedMessage
-                                                    id='Apis.Details.Configuration.Configuration.section.events'
-                                                    defaultMessage='Events'
-                                                />
+                                </Typography>
+                                <Grid direction='column' justifyContent='space-between' alignItems='stretch' 
+                                    spacing={6}>
+                                    <Grid item xs={12} sx={{ mb: 3, position: 'relative' }}>
+                                        <Paper elevation={0} 
+                                            sx={{ p: 3, boxSizing: 'border-box' }}>
+                                            <APISecurity api={apiConfig} configDispatcher={configDispatcher} />
+                                            { api.type !== 'WS' && (
+                                                <CORSConfiguration api={apiConfig} 
+                                                    configDispatcher={configDispatcher} />
                                             )}
 
-                                        </Typography>
-                                        <Grid item xs={12} sx={{ mb: 3, position: 'relative' }}>
-                                            <Paper elevation={0}>
-                                                {!isWebSub ? (
-                                                    <Grid item xs={12} style={{ position: 'relative' }}>
-                                                        <Box mb={3}>
-                                                            <Paper className={classes.paper} elevation={0}>
-                                                                {!isAsyncAPI && (
-                                                                    <ResponseCaching
-                                                                        api={apiConfig}
-                                                                        configDispatcher={configDispatcher}
-                                                                    />
-                                                                )}
-                                                            </Paper>
-                                                        </Box>
-                                                    </Grid>
-                                                ) : (
-                                                    <WebSubConfiguration
+                                            {((api.type !== 'GRAPHQL' || !isAsyncAPI) && api.gatewayType !== 'wso2/apk')
+                                                && <SchemaValidation api={apiConfig} 
+                                                    configDispatcher={configDispatcher} />}
+                                            {api.type === 'GRAPHQL' && api.gatewayType !== 'wso2/apk' && (
+                                                <Box mt={3}>
+                                                    <QueryAnalysis
                                                         api={apiConfig}
-                                                        configDispatcher={configDispatcher}
+                                                        setUpdateComplexityList={setUpdateComplexityList}
+                                                        isRestricted={isRestricted(['apim:api_create'], api)}
+                                                    />
+                                                </Box>
+                                            )}
+                                        </Paper>
+                                        {!isWebSub && (
+                                            <ArrowForwardIcon className={classes.arrowForwardIcon} />
+                                        )}
+                                    </Grid>
+                                    { api.gatewayType !== 'wso2/apk' && !isNonWebSubAsyncAPI && (
+                                        <>
+                                            <Typography className={classes.heading} variant='h6' component='h3'>
+                                                {!isWebSub ? (
+                                                    <FormattedMessage
+                                                        id='Apis.Details.Configuration.Configuration.section.response'
+                                                        defaultMessage='Response'
+                                                    />
+                                                ) : (
+                                                    <FormattedMessage
+                                                        id='Apis.Details.Configuration.Configuration.section.events'
+                                                        defaultMessage='Events'
                                                     />
                                                 )}
-                                            </Paper>
-                                            {!isWebSub && (
-                                                <ArrowBackIcon className={classes.arrowBackIcon} />
+
+                                            </Typography>
+                                            <Grid item xs={12} sx={{ mb: 3, position: 'relative' }}>
+                                                <Paper elevation={0}>
+                                                    {!isWebSub ? (
+                                                        <Grid item xs={12} style={{ position: 'relative' }}>
+                                                            <Box mb={3}>
+                                                                <Paper className={classes.paper} elevation={0}>
+                                                                    {!isAsyncAPI && (
+                                                                        <ResponseCaching
+                                                                            api={apiConfig}
+                                                                            configDispatcher={configDispatcher}
+                                                                        />
+                                                                    )}
+                                                                </Paper>
+                                                            </Box>
+                                                        </Grid>
+                                                    ) : (
+                                                        <WebSubConfiguration
+                                                            api={apiConfig}
+                                                            configDispatcher={configDispatcher}
+                                                        />
+                                                    )}
+                                                </Paper>
+                                                {!isWebSub && (
+                                                    <ArrowBackIcon className={classes.arrowBackIcon} />
+                                                )}
+                                            </Grid>
+                                        </>
+                                    )}
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12} md={5}>
+                                {!isWebSub && (
+                                    <>
+                                        <Typography className={classes.heading} variant='h6' component='h3'>
+                                            <FormattedMessage
+                                                id='Apis.Details.Configuration.Configuration.section.backend'
+                                                defaultMessage='Backend'
+                                            />
+                                        </Typography>
+                                        <Paper
+                                            className={classes.paper}
+                                            style={{ height: 'calc(100% - 75px)' }}
+                                            elevation={0}
+                                        >
+                                            {!api.isAPIProduct() && (
+                                                <>
+                                                    {(!isAsyncAPI && api.gatewayType !== 'wso2/apk') && (
+                                                        <MaxBackendTps
+                                                            api={apiConfig}
+                                                            configDispatcher={configDispatcher}
+                                                        />
+                                                    )}
+                                                    { !isWebSub && (
+                                                        <Endpoints api={api} />
+                                                    )}
+                                                </>
                                             )}
-                                        </Grid>
+                                            {api.isAPIProduct() && (
+                                                <Box alignItems='center' justifyContent='center' 
+                                                    className={classes.info}>
+                                                    <Typography variant='body1'>
+                                                        <FormattedMessage
+                                                            id={'Apis.Details.Configuration.RuntimeConfiguration'
+                                                                + '.backend.api.product.endpoint'}
+                                                            defaultMessage={'Please refer respective APIs for endpoint '
+                                                                + 'information'}
+                                                        />
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </Paper>
                                     </>
                                 )}
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} md={5}>
-                            {!isWebSub && (
-                                <>
-                                    <Typography className={classes.heading} variant='h6' component='h3'>
-                                        <FormattedMessage
-                                            id='Apis.Details.Configuration.Configuration.section.backend'
-                                            defaultMessage='Backend'
-                                        />
-                                    </Typography>
-                                    <Paper
-                                        className={classes.paper}
-                                        style={{ height: 'calc(100% - 75px)' }}
-                                        elevation={0}
-                                    >
-                                        {!api.isAPIProduct() && (
-                                            <>
-                                                {(!isAsyncAPI && api.gatewayType !== 'wso2/apk') && (
-                                                    <MaxBackendTps
-                                                        api={apiConfig}
-                                                        configDispatcher={configDispatcher}
-                                                    />
-                                                )}
-                                                { !isWebSub && (
-                                                    <Endpoints api={api} />
-                                                )}
-                                            </>
-                                        )}
-                                        {api.isAPIProduct() && (
-                                            <Box alignItems='center' justifyContent='center' className={classes.info}>
-                                                <Typography variant='body1'>
-                                                    <FormattedMessage
-                                                        id={'Apis.Details.Configuration.RuntimeConfiguration.backend'
-                                                            + '.api.product.endpoint'}
-                                                        defaultMessage={'Please refer respective APIs for endpoint '
-                                                            + 'information'}
-                                                    />
-                                                </Typography>
-                                            </Box>
-                                        )}
-                                    </Paper>
-                                </>
-                            )}
-                        </Grid>
-                    </Grid>
-                )}
+                    )}
                 <Grid container>
                     <Grid container direction='row' alignItems='center' spacing={1} style={{ marginTop: 20 }}>
                         <Grid item id='save-runtime-configurations'>

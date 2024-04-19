@@ -32,6 +32,7 @@ import Box from '@mui/material/Box';
 import Icon from '@mui/material/Icon';
 import Divider from '@mui/material/Divider';
 import { FormattedMessage, useIntl } from 'react-intl';
+import API from 'AppData/api';
 import { ApiContext } from './ApiContext';
 import GoToTryOut from './GoToTryOut';
 
@@ -186,7 +187,7 @@ function Environments(props) {
     return (
         <StyledBox display='flex' flexDirection='column' width='100%'>
             <Box mr={5} display='flex' area-label='API URL details' alignItems='center' width='100%' flexDirection='row'>
-                {selectedEndpoint && (!advertiseInfo || !advertiseInfo.advertised) && (
+                {selectedEndpoint && ((!advertiseInfo || !advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                     <>
                         <Typography
                             variant='subtitle2'
@@ -474,7 +475,7 @@ function Environments(props) {
                         </Paper>
                     </>
                 )}
-                {!selectedEndpoint && (advertiseInfo && advertiseInfo.advertised
+                {!selectedEndpoint && (advertiseInfo && advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct
                     && !(advertiseInfo.apiExternalProductionEndpoint || advertiseInfo.apiExternalSandboxEndpoint)) && (
                     <Typography variant='subtitle2' component='p' gutterBottom align='left' className={classes.sectionTitle}>
                         <FormattedMessage
@@ -485,7 +486,7 @@ function Environments(props) {
                 )}
                 <GoToTryOut />
             </Box>
-            {(!api.advertiseInfo || !api.advertiseInfo.advertised) && (
+            {((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                 <Box ml={8} alignItems='center' mt={1}>
                     {selectedEndpoint && (
                         <Typography variant='caption'>

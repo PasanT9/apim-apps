@@ -40,6 +40,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { isRestricted } from 'AppData/AuthManager';
 import InlineMessage from 'AppComponents/Shared/InlineMessage';
+import API from 'AppData/api';
 
 const PREFIX = 'DeploymentOnbording';
 
@@ -486,7 +487,8 @@ export default function DeploymentOnboarding(props) {
                                             }
                                             color='primary'
                                             disabled={selectedEnvironment.length === 0
-                                                || (advertiseInfo && advertiseInfo.advertised)
+                                                || (advertiseInfo && advertiseInfo.advertised 
+                                                    && api.apiType !== API.CONSTS.APIProduct)
                                                 || isDeployButtonDisabled}
                                         >
                                             <FormattedMessage

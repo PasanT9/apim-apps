@@ -266,9 +266,10 @@ class LifeCycleUpdate extends Component {
             action = 'Deploy as a Prototype';
         }
         const {
-            api: { id: apiUUID, advertiseInfo },
+            api: { id: apiUUID, advertiseInfo }, isAPIProduct,
         } = this.props;
-        if (action === 'Publish' && !deploymentsAvailable && ((advertiseInfo && !advertiseInfo.advertised))) {
+        if (action === 'Publish' && !deploymentsAvailable && ((advertiseInfo && !advertiseInfo.advertised)
+            || isAPIProduct)) {
             this.setIsOpen(true);
         } else {
             this.updateLCStateOfAPI(apiUUID, action);
@@ -337,6 +338,7 @@ class LifeCycleUpdate extends Component {
             if (lifecycleState.event === 'Publish') {
                 const buttonDisabled = (isMutualSSLEnabled && !isCertAvailable)
                                     || (!isMutualSslOnly && deploymentsAvailable && !isBusinessPlanAvailable)
+                                    || (isAPIProduct && !isBusinessPlanAvailable)
                                     || (deploymentsAvailable && !isMandatoryPropertiesAvailable);
                 // When business plans are not assigned and deployments available
 
@@ -376,20 +378,22 @@ class LifeCycleUpdate extends Component {
                                     <LifeCycleImage lifeCycleStatus={newState || lifeCycleStatus} />
                                 </Grid>
                                 {(lifeCycleStatus === 'CREATED' || lifeCycleStatus === 'PROTOTYPED')
-                                    && (!api.advertiseInfo || !api.advertiseInfo.advertised) && (
-                                    <Grid item xs={3}>
-                                        <CheckboxLabels
-                                            api={api}
-                                            isMutualSSLEnabled={isMutualSSLEnabled}
-                                            isAppLayerSecurityMandatory={isAppLayerSecurityMandatory}
-                                            isCertAvailable={isCertAvailable}
-                                            isBusinessPlanAvailable={isBusinessPlanAvailable}
-                                            isAPIProduct={isAPIProduct}
-                                            isMandatoryPropertiesAvailable={isMandatoryPropertiesAvailable}
-                                            isMandatoryPropertiesConfigured={isMandatoryPropertiesConfigured}
-                                        />
-                                    </Grid>
-                                )}
+                                    && ((!api.advertiseInfo || !api.advertiseInfo.advertised 
+                                        || api.apiType === API.CONSTS.APIProduct)) 
+                                        && (
+                                            <Grid item xs={3}>
+                                                <CheckboxLabels
+                                                    api={api}
+                                                    isMutualSSLEnabled={isMutualSSLEnabled}
+                                                    isAppLayerSecurityMandatory={isAppLayerSecurityMandatory}
+                                                    isCertAvailable={isCertAvailable}
+                                                    isBusinessPlanAvailable={isBusinessPlanAvailable}
+                                                    isAPIProduct={isAPIProduct}
+                                                    isMandatoryPropertiesAvailable={isMandatoryPropertiesAvailable}
+                                                    isMandatoryPropertiesConfigured={isMandatoryPropertiesConfigured}
+                                                />
+                                            </Grid>
+                                        )}
                             </Grid>
                         )}
                     </Grid>

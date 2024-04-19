@@ -28,6 +28,7 @@ import Icon from '@mui/material/Icon';
 import fileDownload from 'js-file-download';
 import converter from 'graphql-to-postman';
 import Box from '@mui/material/Box';
+import API from 'AppData/api';
 import GraphQLUI from './GraphQLUI';
 import TryOutController from '../../../Shared/ApiTryOut/TryOutController';
 import { ApiContext } from '../ApiContext';
@@ -100,7 +101,7 @@ export default function GraphQLConsole() {
     const [keys, setKeys] = useState([]);
     const [additionalHeaders, setAdditionalHeaders] = useState([]);
     const user = AuthManager.getUser();
-    const isAdvertised = api.advertiseInfo && api.advertiseInfo.advertised;
+    const isAdvertised = api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct;
 
     useEffect(() => {
         const apiID = api.id;
@@ -171,7 +172,7 @@ export default function GraphQLConsole() {
      * @returns {*}
      */
     function getURLs() {
-        if (api.advertiseInfo && api.advertiseInfo.advertised) {
+        if (api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct) {
             if (selectedEndpoint === 'PRODUCTION') {
                 return generateUrls(api.advertiseInfo.apiExternalProductionEndpoint);
             } else if (selectedEndpoint === 'SANDBOX') {

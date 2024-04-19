@@ -249,7 +249,7 @@ export default function GoToTryOut() {
     );
     if (!defaultApplication
         || subscribedApplications.length > 0
-        || api.advertiseInfo.advertised
+        || (api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct)
         || !user
         || isAsyncAPI
         || isPrototypedAPI) {

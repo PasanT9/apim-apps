@@ -31,6 +31,7 @@ import TryOutController from 'AppComponents/Shared/ApiTryOut/TryOutController';
 import Application from 'AppData/Application';
 import IconButton from '@mui/material/IconButton';
 import { Close } from '@mui/icons-material';
+import API from 'AppData/api';
 
 const ConfigureKeyDrawer = ({
     isDrawerOpen,
@@ -182,7 +183,7 @@ const ConfigureKeyDrawer = ({
                         </Grid>
                     </Grid>
                     <Grid container padding={2}>
-                        {!user && (!api.advertiseInfo || !api.advertiseInfo.advertised) && (
+                        {!user && ((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                             <Paper sx={{ padding: 1 }}>
                                 <Typography variant='h5' component='h3'>
                                     <InfoIcon sx={{ verticalAlign: 'middle', marginBottom: 0.5 }} />

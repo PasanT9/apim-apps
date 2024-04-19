@@ -28,6 +28,7 @@ import Box from '@mui/material/Box';
 import { createGraphiQLFetcher } from '@graphiql/toolkit';
 import { explorerPlugin } from '@graphiql/plugin-explorer';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import API from 'AppData/api';
 import { ApiContext } from '../ApiContext';
 import Api from '../../../../data/api';
 import QueryComplexityView from './QueryComplexityView';
@@ -82,7 +83,7 @@ export default function GraphQLUI(props) {
      */
     function queryFetcher(wsUrl) {
         let token;
-        if (api.advertiseInfo && api.advertiseInfo.advertised) {
+        if (api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct) {
             token = accessTokenProvider();
         } else if (securitySchemeType === 'API-KEY') {
             token = accessTokenProvider();
