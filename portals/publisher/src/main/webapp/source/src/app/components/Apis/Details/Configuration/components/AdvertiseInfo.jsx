@@ -197,10 +197,17 @@ const AdvertiseInfo = (props) => {
                 <Box>
                     <FormControl component='fieldset' style={{ display: 'flex' }}>
                         <FormLabel component='legend'>
-                            <FormattedMessage
-                                id='Apis.Details.Configuration.components.AdvertiseInfo.advertised.label'
-                                defaultMessage='Mark the API as third party'
-                            />
+                            {apiType === API.CONSTS.APIProduct ? (
+                                <FormattedMessage
+                                    id='Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.apiproduct'
+                                    defaultMessage='Mark the API Product as third party'
+                                />
+                            ):(
+                                <FormattedMessage
+                                    id='Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.api'
+                                    defaultMessage='Mark the API as third party'
+                                />
+                            )}
                         </FormLabel>
                         <RadioGroup
                             aria-label='Mark the API as third party'

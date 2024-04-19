@@ -2055,10 +2055,16 @@
       "value": "The API can be viewed and modified only by specific publishers and creators with the roles that you specify"
     }
   ],
-  "Apis.Details.Configuration.components.AdvertiseInfo.advertised.label": [
+  "Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.api": [
     {
       "type": 0,
       "value": "Mark the API as third party"
+    }
+  ],
+  "Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.apiproduct": [
+    {
+      "type": 0,
+      "value": "Mark the API Product as third party"
     }
   ],
   "Apis.Details.Configuration.components.AdvertiseInfo.advertised.no": [
