@@ -266,10 +266,9 @@ class LifeCycleUpdate extends Component {
             action = 'Deploy as a Prototype';
         }
         const {
-            api: { id: apiUUID, advertiseInfo }, isAPIProduct,
+            api: { id: apiUUID, advertiseInfo },
         } = this.props;
-        if (action === 'Publish' && !deploymentsAvailable && ((advertiseInfo && !advertiseInfo.advertised)
-            || isAPIProduct)) {
+        if (action === 'Publish' && !deploymentsAvailable && ((advertiseInfo && !advertiseInfo.advertised))) {
             this.setIsOpen(true);
         } else {
             this.updateLCStateOfAPI(apiUUID, action);
@@ -338,7 +337,6 @@ class LifeCycleUpdate extends Component {
             if (lifecycleState.event === 'Publish') {
                 const buttonDisabled = (isMutualSSLEnabled && !isCertAvailable)
                                     || (!isMutualSslOnly && deploymentsAvailable && !isBusinessPlanAvailable)
-                                    || (isAPIProduct && !isBusinessPlanAvailable)
                                     || (deploymentsAvailable && !isMandatoryPropertiesAvailable);
                 // When business plans are not assigned and deployments available
 

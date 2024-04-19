@@ -601,15 +601,13 @@ export default function DesignConfigurations() {
                                         />
                                     </Box>
                                     <Box py={1}>
-                                        {api.apiType !== API.CONSTS.APIProduct && (
-                                            <AdvertiseInfo
-                                                oldApi={api}
-                                                api={apiConfig}
-                                                setIsOpen={setIsOpen}
-                                                configDispatcher={configDispatcher}
-                                                setIsDisabled={setErrorInExternalEndpoints}
-                                            />
-                                        )}
+                                        <AdvertiseInfo
+                                            oldApi={api}
+                                            api={apiConfig}
+                                            setIsOpen={setIsOpen}
+                                            configDispatcher={configDispatcher}
+                                            setIsDisabled={setErrorInExternalEndpoints}
+                                        />
                                     </Box>
                                     { settings && !settings.portalConfigurationOnlyModeEnabled && (
                                         <Box py={1}>

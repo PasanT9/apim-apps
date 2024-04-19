@@ -36,6 +36,7 @@ import FormControl from '@mui/material/FormControl';
 import HelpOutline from '@mui/icons-material/HelpOutline';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import API from 'AppData/api.js';
 
 const PREFIX = 'AdvertiseInfo';
 
@@ -103,7 +104,7 @@ const StyledGrid = styled(Grid)((
 const AdvertiseInfo = (props) => {
     const {
         configDispatcher,
-        oldApi: { policies: oldPolicies, endpointConfig: oldEndpointConfig },
+        oldApi: { policies: oldPolicies, endpointConfig: oldEndpointConfig, apiType },
         api: {
             advertiseInfo,
             type,
@@ -181,7 +182,7 @@ const AdvertiseInfo = (props) => {
             configDispatcher({ action: 'policies', value: oldPolicies });
             configDispatcher({ action: 'endpointConfig', value: oldEndpointConfig });
         }
-        if (value === 'true') {
+        if (value === 'true' && apiType !== API.CONSTS.APIProduct) {
             setIsDisabled(!(validateUrl(advertiseInfo.apiExternalProductionEndpoint, false) && 
                 validateUrl(advertiseInfo.apiExternalSandboxEndpoint) && 
                 validateUrl(advertiseInfo.originalDevPortalUrl)));
@@ -289,7 +290,7 @@ const AdvertiseInfo = (props) => {
                 )}
             </Grid>
             <Grid>
-                {advertiseInfo.advertised && (
+                {advertiseInfo.advertised && apiType !== API.CONSTS.APIProduct && (
                     <>
                         <TextField
                             label={(
