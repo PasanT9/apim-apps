@@ -541,7 +541,7 @@ function TryOutController(props) {
         <Root>
             <Grid x={12} md={6} className={classes.centerItems}>
                 <Box>
-                    {securitySchemeType !== 'TEST' && (!api.advertiseInfo || !api.advertiseInfo.advertised) && (
+                    {securitySchemeType !== 'TEST' && ((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                         <>
                             <Box mb={1}>
                                 <Typography variant='body1'>
@@ -577,7 +577,7 @@ function TryOutController(props) {
                         </>
                     )}
                     {((isApiKeyEnabled || isBasicAuthEnabled || isOAuthEnabled) && showSecurityType)
-                        && (!api.advertiseInfo || !api.advertiseInfo.advertised) && (
+                        && ((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                         <>
                             <Typography variant='h5' component='h2' color='textPrimary' className={classes.categoryHeading}>
                                 <FormattedMessage
@@ -650,7 +650,7 @@ function TryOutController(props) {
                 <Box display='block'>
                     {user && subscriptions
                         && subscriptions.length > 0 && securitySchemeType !== 'BASIC' && securitySchemeType !== 'TEST'
-                        && (!api.advertiseInfo || !api.advertiseInfo.advertised)
+                        && ((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct)
                         && (
                             <SelectAppPanel
                                 subscriptions={subscriptions}
@@ -662,7 +662,7 @@ function TryOutController(props) {
                             />
                         )}
                     {subscriptions && subscriptions.length === 0 && securitySchemeType !== 'TEST'
-                        && (!api.advertiseInfo || !api.advertiseInfo.advertised) ? (
+                        && ((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) ? (
                             <Grid x={8} md={6} className={classes.tokenType} item>
                                 <Box mb={1} alignItems='center'>
                                     <Typography variant='body1'>
@@ -679,8 +679,8 @@ function TryOutController(props) {
                                 </Box>
                             </Grid>
                         ) : (
-                            (!ksGenerated && securitySchemeType === 'OAUTH') && (!api.advertiseInfo
-                                || !api.advertiseInfo.advertised) && (
+                            (!ksGenerated && securitySchemeType === 'OAUTH') && ((!api.advertiseInfo
+                                || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                                 <Grid x={8} md={6} className={classes.tokenType} item>
                                     <Box mb={1} alignItems='center'>
                                         <Typography variant='body1'>
@@ -700,7 +700,7 @@ function TryOutController(props) {
                                 </Grid>
                             )
                         )}
-                    {(!api.advertiseInfo || !api.advertiseInfo.advertised) ? (
+                    {((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) ? (
                         <Box display='block' justifyContent='center'>
                             <Grid x={8} md={6} className={classes.tokenType} item>
                                 {securitySchemeType === 'BASIC' && (
@@ -863,7 +863,7 @@ function TryOutController(props) {
                             api={api}
                         />
                     )}
-                    {(!api.advertiseInfo || !api.advertiseInfo.advertised) && (
+                    {((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                         <Box display='flex' justifyContent='center' className={classes.gatewayEnvironment}>
                             <Grid xs={12} md={6} item>
                                 {(environments && environments.length > 0) && (

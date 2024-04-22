@@ -924,8 +924,11 @@
   "Apis.Details.Configuration.components.AccessControl.tooltip.restrict.\n                                    desc": {
     "defaultMessage": "The API can be viewed and modified only by specific publishers and creators with the roles that you specify"
   },
-  "Apis.Details.Configuration.components.AdvertiseInfo.advertised.label": {
+  "Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.api": {
     "defaultMessage": "Mark the API as third party"
+  },
+  "Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.apiproduct": {
+    "defaultMessage": "Mark the API Product as third party"
   },
   "Apis.Details.Configuration.components.AdvertiseInfo.advertised.no": {
     "defaultMessage": "No"

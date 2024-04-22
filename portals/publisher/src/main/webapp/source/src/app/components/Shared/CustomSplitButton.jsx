@@ -11,6 +11,7 @@ import Popper from '@mui/material/Popper';
 import CircularProgress from '@mui/material/CircularProgress';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
+import API from 'AppData/api';
 
 const options = ['Save and deploy', 'Save'];
 
@@ -59,7 +60,7 @@ export default function CustomSplitButton(props) {
 
     return (
         <Grid container direction='column' alignItems='center'>
-            {(advertiseInfo && advertiseInfo.advertised) ? (
+            {(advertiseInfo && advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct) ? (
                 <Grid item xs={12}>
                     <Button
                         onClick={handleSave}

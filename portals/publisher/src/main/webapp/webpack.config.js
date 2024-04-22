@@ -223,7 +223,9 @@ module.exports = (env, argv) => {
                     '!contextmenu',
                     '!coreCommands',
                 ]}),
-            new CleanWebpackPlugin(),
+            new CleanWebpackPlugin({
+                dangerouslyAllowCleanPatternsOutsideProject: true,
+            }),
             new HtmlWebpackPlugin({
                 inject: false,
                 template: path.resolve(__dirname, 'site/public/pages/index.jsp.hbs'),

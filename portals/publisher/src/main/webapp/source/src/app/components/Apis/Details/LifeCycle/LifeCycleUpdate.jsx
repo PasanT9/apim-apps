@@ -378,20 +378,22 @@ class LifeCycleUpdate extends Component {
                                     <LifeCycleImage lifeCycleStatus={newState || lifeCycleStatus} />
                                 </Grid>
                                 {(lifeCycleStatus === 'CREATED' || lifeCycleStatus === 'PROTOTYPED')
-                                    && (!api.advertiseInfo || !api.advertiseInfo.advertised) && (
-                                    <Grid item xs={3}>
-                                        <CheckboxLabels
-                                            api={api}
-                                            isMutualSSLEnabled={isMutualSSLEnabled}
-                                            isAppLayerSecurityMandatory={isAppLayerSecurityMandatory}
-                                            isCertAvailable={isCertAvailable}
-                                            isBusinessPlanAvailable={isBusinessPlanAvailable}
-                                            isAPIProduct={isAPIProduct}
-                                            isMandatoryPropertiesAvailable={isMandatoryPropertiesAvailable}
-                                            isMandatoryPropertiesConfigured={isMandatoryPropertiesConfigured}
-                                        />
-                                    </Grid>
-                                )}
+                                    && ((!api.advertiseInfo || !api.advertiseInfo.advertised 
+                                        || api.apiType === API.CONSTS.APIProduct)) 
+                                        && (
+                                            <Grid item xs={3}>
+                                                <CheckboxLabels
+                                                    api={api}
+                                                    isMutualSSLEnabled={isMutualSSLEnabled}
+                                                    isAppLayerSecurityMandatory={isAppLayerSecurityMandatory}
+                                                    isCertAvailable={isCertAvailable}
+                                                    isBusinessPlanAvailable={isBusinessPlanAvailable}
+                                                    isAPIProduct={isAPIProduct}
+                                                    isMandatoryPropertiesAvailable={isMandatoryPropertiesAvailable}
+                                                    isMandatoryPropertiesConfigured={isMandatoryPropertiesConfigured}
+                                                />
+                                            </Grid>
+                                        )}
                             </Grid>
                         )}
                     </Grid>

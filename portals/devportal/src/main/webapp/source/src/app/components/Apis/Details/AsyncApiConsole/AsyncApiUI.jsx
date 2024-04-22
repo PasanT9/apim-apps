@@ -67,7 +67,7 @@ export default function AsyncApiUI(props) {
         accessTokenProvider,
     } = props;
     const { api } = useContext(ApiContext);
-    const isAdvertised = api.advertiseInfo && api.advertiseInfo.advertised;
+    const isAdvertised = api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct;
 
     let initialEndpoint;
     initialEndpoint = URLs && (URLs.http || URLs.https);

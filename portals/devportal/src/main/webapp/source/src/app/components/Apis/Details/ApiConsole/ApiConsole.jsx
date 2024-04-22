@@ -37,6 +37,7 @@ import CloudDownloadRounded from '@mui/icons-material/CloudDownloadRounded';
 import queryString from 'query-string';
 import Settings from 'Settings';
 import Utils from 'AppData/Utils';
+import API from 'AppData/api';
 import { ApiContext } from '../ApiContext';
 import Progress from '../../../Shared/Progress';
 import Api from '../../../../data/api';
@@ -449,7 +450,7 @@ class ApiConsole extends React.Component {
             securitySchemeType, username, password, productionAccessToken, sandboxAccessToken, selectedKeyType,
             productionApiKey, sandboxApiKey, api, advAuthHeaderValue,
         } = this.state;
-        if (api.advertiseInfo && api.advertiseInfo.advertised) {
+        if (api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct) {
             return advAuthHeaderValue;
         }
         if (securitySchemeType === 'BASIC') {
@@ -531,7 +532,7 @@ class ApiConsole extends React.Component {
             }
         }
         let swaggerSpec = swagger;
-        if (api.advertiseInfo && api.advertiseInfo.advertised) {
+        if (api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct) {
             authorizationHeader = advAuthHeader;
             if (swaggerSpec.openapi) {
                 if (selectedEndpoint === 'PRODUCTION') {
@@ -559,7 +560,7 @@ class ApiConsole extends React.Component {
             <Root>
                 <Paper className={classes.paper}>
                     <Grid container className={classes.grid}>
-                        {!user && (!api.advertiseInfo || !api.advertiseInfo.advertised) && (
+                        {!user && ((!api.advertiseInfo || !api.advertiseInfo.advertised) || api.apiType === API.CONSTS.APIProduct) && (
                             <Grid item md={6}>
                                 <Paper className={classes.userNotificationPaper}>
                                     <Typography variant='h5' component='h3'>

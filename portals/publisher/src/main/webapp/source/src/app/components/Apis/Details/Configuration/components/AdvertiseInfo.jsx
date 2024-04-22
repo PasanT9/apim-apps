@@ -36,6 +36,7 @@ import FormControl from '@mui/material/FormControl';
 import HelpOutline from '@mui/icons-material/HelpOutline';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import API from 'AppData/api.js';
 
 const PREFIX = 'AdvertiseInfo';
 
@@ -103,7 +104,7 @@ const StyledGrid = styled(Grid)((
 const AdvertiseInfo = (props) => {
     const {
         configDispatcher,
-        oldApi: { policies: oldPolicies, endpointConfig: oldEndpointConfig },
+        oldApi: { policies: oldPolicies, endpointConfig: oldEndpointConfig, apiType },
         api: {
             advertiseInfo,
             type,
@@ -181,7 +182,7 @@ const AdvertiseInfo = (props) => {
             configDispatcher({ action: 'policies', value: oldPolicies });
             configDispatcher({ action: 'endpointConfig', value: oldEndpointConfig });
         }
-        if (value === 'true') {
+        if (value === 'true' && apiType !== API.CONSTS.APIProduct) {
             setIsDisabled(!(validateUrl(advertiseInfo.apiExternalProductionEndpoint, false) && 
                 validateUrl(advertiseInfo.apiExternalSandboxEndpoint) && 
                 validateUrl(advertiseInfo.originalDevPortalUrl)));
@@ -196,10 +197,17 @@ const AdvertiseInfo = (props) => {
                 <Box>
                     <FormControl component='fieldset' style={{ display: 'flex' }}>
                         <FormLabel component='legend'>
-                            <FormattedMessage
-                                id='Apis.Details.Configuration.components.AdvertiseInfo.advertised.label'
-                                defaultMessage='Mark the API as third party'
-                            />
+                            {apiType === API.CONSTS.APIProduct ? (
+                                <FormattedMessage
+                                    id='Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.apiproduct'
+                                    defaultMessage='Mark the API Product as third party'
+                                />
+                            ):(
+                                <FormattedMessage
+                                    id='Apis.Details.Configuration.components.AdvertiseInfo.advertised.label.api'
+                                    defaultMessage='Mark the API as third party'
+                                />
+                            )}
                         </FormLabel>
                         <RadioGroup
                             aria-label='Mark the API as third party'
@@ -210,7 +218,7 @@ const AdvertiseInfo = (props) => {
                         >
                             <FormControlLabel
                                 disabled={isRestricted(['apim:api_create'], apiFromContext)
-                                    || type === 'ASYNC' || isDeployed}
+                                    || type === 'ASYNC' || (apiType !== API.CONSTS.APIProduct && isDeployed)}
                                 value
                                 control={<Radio color='primary' />}
                                 label={(
@@ -222,7 +230,7 @@ const AdvertiseInfo = (props) => {
                             />
                             <FormControlLabel
                                 disabled={isRestricted(['apim:api_create'], apiFromContext)
-                                    || type === 'ASYNC' || isDeployed}
+                                    || type === 'ASYNC' || (apiType !== API.CONSTS.APIProduct && isDeployed)}
                                 value={false}
                                 control={<Radio color='primary' />}
                                 label={(
@@ -272,7 +280,7 @@ const AdvertiseInfo = (props) => {
                         />
                     </MuiAlert>
                 )}
-                {isDeployed && (
+                {isDeployed && apiType !== API.CONSTS.APIProduct && (
                     <MuiAlert severity='info' className={classes.alert}>
                         <Typography gutterBottom component='div' className={classes.alertTitle}>
                             <FormattedMessage
@@ -289,7 +297,7 @@ const AdvertiseInfo = (props) => {
                 )}
             </Grid>
             <Grid>
-                {advertiseInfo.advertised && (
+                {advertiseInfo.advertised && apiType !== API.CONSTS.APIProduct && (
                     <>
                         <TextField
                             label={(

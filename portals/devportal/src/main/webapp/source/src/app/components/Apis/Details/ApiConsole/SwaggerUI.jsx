@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import 'swagger-ui-react/swagger-ui.css';
 import SwaggerUILib from 'swagger-ui-react';
+import API from 'AppData/api';
 import CustomPadLock from './CustomPadLock';
 
 const disableAuthorizeAndInfoPlugin = function (spec) {
@@ -55,7 +56,8 @@ const SwaggerUI = (props) => {
                 req.headers[currentAuthHeader] = 'Basic ' + accessTokenProvider();
             } else if (currentSecuritySchemeType === 'TEST') {
                 req.headers[currentAuthHeader] = accessTokenProvider();
-            } else if (api.advertiseInfo && api.advertiseInfo.advertised && authorizationHeader !== '') {
+            } else if (api.advertiseInfo && api.advertiseInfo.advertised && authorizationHeader !== ''
+                && api.apiType !== API.CONSTS.APIProduct) {
                 req.headers[currentAuthHeader] = accessTokenProvider();
             } else {
                 req.headers[currentAuthHeader] = 'Bearer ' + accessTokenProvider();

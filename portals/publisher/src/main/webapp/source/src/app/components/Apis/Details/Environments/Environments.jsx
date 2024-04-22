@@ -1277,7 +1277,7 @@ export default function Environments() {
         >
             <Grid item className={classes.shapeRec} />
             <Grid item className={clsx(classes.shapeCircaleBack, classes.shapeCircle)}>
-                {api.advertiseInfo && api.advertiseInfo.advertised ? (
+                {api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct ? (
                     <Grid
                         className={clsx(classes.shapeDottedStart, classes.shapeCircle)}
                         style={{ cursor: 'pointer' }}
@@ -1304,7 +1304,7 @@ export default function Environments() {
         >
             <Grid item className={classes.shapeRec} />
             <Grid item className={clsx(classes.shapeCircaleBack, classes.shapeCircle)}>
-                {api.advertiseInfo && api.advertiseInfo.advertised ? (
+                {api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct ? (
                     <Grid
                         className={clsx(classes.shapeDottedStart, classes.shapeCircle)}
                         style={{ cursor: 'pointer' }}
@@ -1704,7 +1704,8 @@ export default function Environments() {
                             api.isRevision || (settings && settings.portalConfigurationOnlyModeEnabled) ||
                             !selectedRevision.some((r) => r.env === row.name && r.revision) ||
                             !selectedVhosts.some((v) => v.env === row.name && v.vhost) ||
-                            (api.advertiseInfo && api.advertiseInfo.advertised) ||
+                            (api.advertiseInfo && api.advertiseInfo.advertised 
+                                && api.apiType !== API.CONSTS.APIProduct) ||
                             isDeployButtonDisabled
                         }
                         variant='outlined'
@@ -1814,7 +1815,7 @@ export default function Environments() {
                         api.isRevision || (settings && settings.portalConfigurationOnlyModeEnabled) ||
                         !selectedRevision.some((r) => r.env === row.name && r.revision) ||
                         !selectedVhosts.some((v) => v.env === row.name && v.vhost) ||
-                        (api.advertiseInfo && api.advertiseInfo.advertised) ||
+                        (api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct) ||
                         isDeployButtonDisabled
                     }
                     variant='outlined'
@@ -1950,7 +1951,7 @@ export default function Environments() {
 
     return (
         <Root>
-            {api.advertiseInfo && api.advertiseInfo.advertised && (
+            {api.advertiseInfo && api.advertiseInfo.advertised && api.apiType !== API.CONSTS.APIProduct && (
                 <MuiAlert severity='info' className={classes.infoAlert}>
                     <Typography variant='body' align='left' data-testid='third-party-api-deployment-dialog'>
                         <FormattedMessage
@@ -2009,7 +2010,8 @@ export default function Environments() {
                             <Button
                                 onClick={toggleDeployRevisionPopup}
                                 disabled={isRestricted(['apim:api_create', 'apim:api_publish'], api)
-                                            || (api.advertiseInfo && api.advertiseInfo.advertised) 
+                                            || (api.advertiseInfo && api.advertiseInfo.advertised 
+                                                && api.apiType !== API.CONSTS.APIProduct) 
                                             || isDeployButtonDisabled
                                             || api.lifeCycleStatus === 'RETIRED'}
                                 variant='contained'
@@ -2442,7 +2444,8 @@ export default function Environments() {
                             disabled={SelectedEnvironment.length === 0
                                 || (allRevisions && allRevisions.length === revisionCount && !extraRevisionToDelete)
                                 || isRestricted(['apim:api_create', 'apim:api_publish'], api)
-                                || (api.advertiseInfo && api.advertiseInfo.advertised)
+                                || (api.advertiseInfo && api.advertiseInfo.advertised 
+                                    && api.apiType !== API.CONSTS.APIProduct)
                                 || isDeployButtonDisabled}
                         >
                             <FormattedMessage
@@ -3004,7 +3007,8 @@ export default function Environments() {
                                                                 )
                                                                 || !selectedRevision.some(
                                                                     (r) => r.env === row.name && r.revision,
-                                                                ) || (api.advertiseInfo && api.advertiseInfo.advertised)
+                                                                ) || (api.advertiseInfo && api.advertiseInfo.advertised 
+                                                                    && api.apiType !== API.CONSTS.APIProduct)
                                                             || isDeployButtonDisabled}
                                                             variant='outlined'
                                                             onClick={() => deployRevision(selectedRevision.find(
